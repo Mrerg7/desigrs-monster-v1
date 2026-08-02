@@ -10,11 +10,11 @@ export const SITE = {
   askingPriceLabel: '$6,500',
   locale: 'en_US',
   publishedDate: '2026-08-02',
-  googleSiteVerification: '',
+  googleSiteVerification: 'o-tlNK50hkqfr9rGLhjJmD0j6KtVebJ9gnJmANZsPLo',
 } as const;
 
 export const HERO_IMAGE = '/hero.jpg';
-export const OG_IMAGE = `${SITE.url}/og.svg`;
+export const OG_IMAGE = `${SITE.url}/hero.jpg`;
 
 export const ACQUISITION_MAILTO = `mailto:${SITE.email}?subject=${encodeURIComponent(
   'desigrs.monster Domain Acquisition Inquiry',

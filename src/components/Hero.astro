@@ -1,5 +1,5 @@
 ---
-import { ACQUISITION_MAILTO, SITE } from '../config/site';
+import { ACQUISITION_MAILTO, HERO_IMAGE, SITE } from '../config/site';
 
 interface Props {
   tagline: string;
@@ -11,10 +11,24 @@ const { tagline, heroSupport, trustPoints } = Astro.props;
 ---
 
 <section class="relative min-h-[100dvh] overflow-hidden text-white">
-  <div class="absolute inset-0 hero-plane" aria-hidden="true">
-    <div class="hero-grid"></div>
-    <div class="hero-glow hero-glow-a"></div>
-    <div class="hero-glow hero-glow-b"></div>
+  <div class="absolute inset-0" aria-hidden="true">
+    <img
+      src={HERO_IMAGE}
+      alt=""
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+      decoding="async"
+      class="h-full w-full object-cover object-center"
+    />
+    <div
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,6,20,0.55)_0%,rgba(15,10,26,0.72)_42%,rgba(15,10,26,0.92)_100%)]"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(124,58,237,0.18),transparent_60%)]"
+    >
+    </div>
   </div>
 
   <div class="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col justify-center px-5 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32">
