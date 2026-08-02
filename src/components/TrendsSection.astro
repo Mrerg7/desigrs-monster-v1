@@ -1,0 +1,39 @@
+---
+interface Props {
+  items: { title: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="trends" class="relative z-10 scroll-mt-20 border-y border-[var(--color-line)] bg-white/40 px-5 py-20 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-6xl">
+    <div class="max-w-2xl">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        Current trajectory
+      </p>
+      <h2 class="section-title text-[var(--color-ink)]">
+        From execution to orchestration.
+      </h2>
+      <p class="mt-4 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+        The tools, aesthetics, and org structures of design are being rewritten in real time.
+      </p>
+    </div>
+
+    <ol class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item, index) => (
+        <li>
+          <p class="mb-2 font-mono text-xs tracking-widest text-[var(--color-mist)]">
+            {String(index + 1).padStart(2, '0')}
+          </p>
+          <h3 class="font-display text-lg tracking-tight text-[var(--color-ink)] sm:text-xl">
+            {item.title}
+          </h3>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]/75">
+            {item.body}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

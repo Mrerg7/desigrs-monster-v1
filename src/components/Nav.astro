@@ -1,0 +1,29 @@
+---
+import { ACQUISITION_MAILTO, SITE } from '../config/site';
+---
+
+<header class="absolute inset-x-0 top-0 z-30">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-6 sm:py-6" aria-label="Primary">
+    <a href="/" class="group flex items-center gap-3 text-white">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/10 font-display text-sm tracking-tight"
+        aria-hidden="true"
+      >
+        DM
+      </span>
+      <span class="font-display text-lg tracking-tight sm:text-xl">{SITE.name}</span>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="#why"
+        class="hidden text-sm font-medium text-white/75 transition-colors hover:text-white sm:inline"
+      >
+        Why this domain
+      </a>
+      <a href={ACQUISITION_MAILTO} class="btn-primary !px-4 !py-2.5 text-sm sm:!px-5">
+        Acquire
+      </a>
+    </div>
+  </nav>
+</header>

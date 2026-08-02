@@ -1,0 +1,33 @@
+---
+interface Props {
+  items: { title: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="seo" class="relative z-10 scroll-mt-20 px-5 py-20 sm:px-6 sm:py-24">
+  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+    <div>
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        Brand &amp; SEO value
+      </p>
+      <h2 class="section-title text-[var(--color-ink)]">
+        Built for discovery, recall, and creative authority.
+      </h2>
+      <p class="mt-4 max-w-xl font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+        A short, playful, future-facing name that signals the next chapter of design — 
+        AI collaboration, immersive media, and human taste at the center.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {items.map((item) => (
+        <div class="border-l-2 border-[var(--color-accent)] pl-5">
+          <h3 class="font-display text-lg tracking-tight text-[var(--color-ink)]">{item.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]/75">{item.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

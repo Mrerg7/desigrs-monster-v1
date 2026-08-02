@@ -1,0 +1,53 @@
+---
+import { ACQUISITION_MAILTO, SITE } from '../config/site';
+
+interface Props {
+  tagline: string;
+  heroSupport: string;
+  trustPoints: string[];
+}
+
+const { tagline, heroSupport, trustPoints } = Astro.props;
+---
+
+<section class="relative min-h-[100dvh] overflow-hidden text-white">
+  <div class="absolute inset-0 hero-plane" aria-hidden="true">
+    <div class="hero-grid"></div>
+    <div class="hero-glow hero-glow-a"></div>
+    <div class="hero-glow hero-glow-b"></div>
+  </div>
+
+  <div class="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col justify-center px-5 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32">
+    <p class="reveal mb-5 font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-bright)]">
+      Premium domain available
+    </p>
+
+    <h1 class="domain-mark reveal reveal-delay-1 text-white">
+      {SITE.name}
+    </h1>
+
+    <p class="reveal reveal-delay-2 mt-5 max-w-xl font-serif text-xl leading-snug text-white/90 sm:text-2xl">
+      {tagline}
+    </p>
+
+    <p class="reveal reveal-delay-2 mt-4 max-w-lg text-base leading-relaxed text-white/70 sm:text-lg">
+      {heroSupport}
+    </p>
+
+    <div class="reveal reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a href={ACQUISITION_MAILTO} class="btn-primary w-full sm:w-auto">
+        Inquire at {SITE.email}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+          <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+        </svg>
+      </a>
+      <a href="#why" class="btn-ghost w-full sm:w-auto">See why it matters</a>
+    </div>
+
+    <ul class="reveal reveal-delay-3 mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium uppercase tracking-[0.14em] text-white/55">
+      {trustPoints.map((point) => (
+        <li>{point}</li>
+      ))}
+    </ul>
+  </div>
+</section>
