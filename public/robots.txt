@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://desigrs.monster/sitemap-index.xml
