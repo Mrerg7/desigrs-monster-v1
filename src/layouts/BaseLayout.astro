@@ -1,0 +1,181 @@
+---
+import '../styles/global.css';
+import { SITE, OG_IMAGE, ACQUISITION_MAILTO } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  ogImage = OG_IMAGE,
+  noindex = false,
+} = Astro.props;
+
+const pathname = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(pathname, `${SITE.url}/`).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      url: SITE.url,
+      name: SITE.name,
+      description,
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${SITE.url}/#webpage`,
+      url: SITE.url,
+      name: title,
+      description,
+      isPartOf: { '@id': `${SITE.url}/#website` },
+      datePublished: SITE.publishedDate,
+      dateModified: SITE.publishedDate,
+      inLanguage: 'en-US',
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: ogImage,
+      },
+    },
+    {
+      '@type': 'Product',
+      '@id': `${SITE.url}/#product`,
+      name: 'desigrs.monster Premium Domain Name',
+      description:
+        'The premium domain for the AI-powered design era — generative systems, immersive experiences, and human-centered strategy. Available for acquisition.',
+      url: SITE.url,
+      image: ogImage,
+      category: 'Premium Domain Name',
+      brand: {
+        '@type': 'Brand',
+        name: SITE.name,
+      },
+      offers: {
+        '@type': 'Offer',
+        url: ACQUISITION_MAILTO,
+        price: String(SITE.askingPrice),
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        businessFunction: 'https://schema.org/Sell',
+        seller: {
+          '@type': 'Organization',
+          name: SITE.name,
+          email: SITE.email,
+        },
+        shippingDetails: {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: '0.00',
+            currency: 'USD',
+          },
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 0,
+              maxValue: 1,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 0,
+              maxValue: 0,
+              unitCode: 'DAY',
+            },
+          },
+          shippingDestination: {
+            '@type': 'DefinedRegion',
+            addressCountry: 'US',
+          },
+        },
+        hasMerchantReturnPolicy: {
+          '@type': 'MerchantReturnPolicy',
+          returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+          applicableCountry: 'US',
+          merchantReturnDays: 0,
+        },
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.url}/#organization`,
+      name: SITE.name,
+      url: SITE.url,
+      email: SITE.email,
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
+    />
+    <meta
+      name="keywords"
+      content="desigrs.monster, design domain for sale, AI design, generative design, immersive design, premium domain, designer tools, creative technology"
+    />
+    <link rel="canonical" href={canonicalURL} />
+
+    {SITE.googleSiteVerification && (
+      <meta name="google-site-verification" content={SITE.googleSiteVerification} />
+    )}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="desigrs.monster — The Domain for the Future of Design"
+    />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta
+      name="twitter:image:alt"
+      content="desigrs.monster — The Domain for the Future of Design"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body class="atmosphere min-h-dvh overflow-x-hidden antialiased">
+    <slot />
+  </body>
+</html>
