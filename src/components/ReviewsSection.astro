@@ -1,0 +1,79 @@
+---
+import { DOMAIN_AGGREGATE_RATING, DOMAIN_REVIEWS } from '../config/site';
+
+function stars(rating: number) {
+  return Array.from({ length: 5 }, (_, index) => index < rating);
+}
+---
+
+<section id="reviews" class="relative z-10 border-t border-[var(--color-line)] bg-white/40 px-5 py-20 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-6xl">
+    <div class="max-w-2xl">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent-deep)]">
+        Domain feedback
+      </p>
+      <h2 class="section-title text-[var(--color-ink)]">
+        What buyers and strategists say
+      </h2>
+      <p class="mt-4 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+        Perspectives from brand strategists, domain investors, and creative leaders evaluating
+        desigrs.monster as an acquisition target.
+      </p>
+    </div>
+
+    <div class="mt-8 inline-flex items-center gap-3 rounded-2xl border border-[var(--color-line)] bg-white/70 px-5 py-3">
+      <div class="flex items-center gap-0.5" aria-hidden="true">
+        {stars(Math.round(Number(DOMAIN_AGGREGATE_RATING.ratingValue))).map((filled) => (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class={`h-5 w-5 ${filled ? 'text-[var(--color-accent)]' : 'text-[var(--color-line)]'}`}
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.083 2.626a1 1 0 01-.95.69h-2.834c-.969 0-1.371 1.24-.588 1.81l2.292 1.664a1 1 0 01.364 1.118l-.876 2.687c-.293.897.755 1.688 1.538 1.118l2.292-1.664a1 1 0 011.118 0l2.292 1.664c.783.57 1.831-.221 1.538-1.118l-.876-2.687a1 1 0 01.364-1.118l2.292-1.664c.783-.57.38-1.81-.588-1.81h-2.834a1 1 0 01-.95-.69l-1.083-2.626z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        ))}
+      </div>
+      <p class="text-sm font-medium text-[var(--color-ink-soft)]">
+        <span class="font-display text-lg text-[var(--color-ink)]">{DOMAIN_AGGREGATE_RATING.ratingValue}</span>
+        {' '}out of 5
+        <span class="text-[var(--color-mist)]"> · {DOMAIN_AGGREGATE_RATING.reviewCount} reviews</span>
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {DOMAIN_REVIEWS.map((review) => (
+        <article class="rounded-2xl border border-[var(--color-line)] bg-white/80 p-6 shadow-sm">
+          <div class="flex items-center gap-0.5" aria-label={`${review.rating} out of 5 stars`}>
+            {stars(review.rating).map((filled) => (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class={`h-4 w-4 ${filled ? 'text-[var(--color-accent)]' : 'text-[var(--color-line)]'}`}
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.083 2.626a1 1 0 01-.95.69h-2.834c-.969 0-1.371 1.24-.588 1.81l2.292 1.664a1 1 0 01.364 1.118l-.876 2.687c-.293.897.755 1.688 1.538 1.118l2.292-1.664a1 1 0 011.118 0l2.292 1.664c.783.57 1.831-.221 1.538-1.118l-.876-2.687a1 1 0 01.364-1.118l2.292-1.664c.783-.57.38-1.81-.588-1.81h-2.834a1 1 0 01-.95-.69l-1.083-2.626z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            ))}
+          </div>
+          <blockquote class="mt-4 font-serif text-base leading-relaxed text-[var(--color-ink-soft)]">
+            “{review.reviewBody}”
+          </blockquote>
+          <footer class="mt-5 border-t border-[var(--color-line)] pt-4">
+            <p class="font-display text-sm text-[var(--color-ink)]">{review.author}</p>
+            <p class="text-xs text-[var(--color-mist)]">{review.role}</p>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

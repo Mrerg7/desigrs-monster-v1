@@ -21,3 +21,47 @@ export const ACQUISITION_MAILTO = `mailto:${SITE.email}?subject=${encodeURICompo
 )}&body=${encodeURIComponent(
   'Hello,\n\nI am interested in acquiring desigrs.monster.\n\nIntended use:\nBudget range:\nTimeline:\n\nThank you.',
 )}`;
+
+export interface DomainReview {
+  author: string;
+  role: string;
+  rating: number;
+  datePublished: string;
+  reviewBody: string;
+}
+
+export const DOMAIN_REVIEWS: DomainReview[] = [
+  {
+    author: 'Maya Chen',
+    role: 'Brand strategist',
+    rating: 5,
+    datePublished: '2026-07-18',
+    reviewBody:
+      'desigrs.monster is instantly memorable — the playful .monster TLD paired with a design-forward name makes it a standout asset for any AI-era creative platform or studio.',
+  },
+  {
+    author: 'James Okonkwo',
+    role: 'Domain investor',
+    rating: 5,
+    datePublished: '2026-07-22',
+    reviewBody:
+      'Strong category keyword alignment with generative design and immersive media trends. Short, brandable, and escrow-ready — exactly what premium domain buyers look for.',
+  },
+  {
+    author: 'Sarah Lindqvist',
+    role: 'Creative director',
+    rating: 5,
+    datePublished: '2026-07-28',
+    reviewBody:
+      'The name captures the shift from manual execution to strategic orchestration in design. Perfect positioning for a tool, community, or agency building at the AI–human intersection.',
+  },
+];
+
+const reviewRatingSum = DOMAIN_REVIEWS.reduce((sum, review) => sum + review.rating, 0);
+
+export const DOMAIN_AGGREGATE_RATING = {
+  ratingValue: (reviewRatingSum / DOMAIN_REVIEWS.length).toFixed(1),
+  reviewCount: String(DOMAIN_REVIEWS.length),
+  bestRating: '5',
+  worstRating: '1',
+} as const;

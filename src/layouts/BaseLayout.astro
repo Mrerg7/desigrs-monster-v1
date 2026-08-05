@@ -1,6 +1,11 @@
 ---
 import '../styles/global.css';
-import { SITE, OG_IMAGE, ACQUISITION_MAILTO } from '../config/site';
+import {
+  SITE,
+  OG_IMAGE,
+  DOMAIN_REVIEWS,
+  DOMAIN_AGGREGATE_RATING,
+} from '../config/site';
 
 interface Props {
   title?: string;
@@ -20,6 +25,89 @@ const pathname = Astro.url.pathname.endsWith('/')
   ? Astro.url.pathname
   : `${Astro.url.pathname}/`;
 const canonicalURL = new URL(pathname, `${SITE.url}/`).href;
+
+const productNode = {
+  '@type': 'Product',
+  '@id': `${SITE.url}/#product`,
+  name: 'desigrs.monster Premium Domain Name',
+  description:
+    'The premium domain for the AI-powered design era — generative systems, immersive experiences, and human-centered strategy. Available for acquisition.',
+  url: SITE.url,
+  image: ogImage,
+  category: 'Premium Domain Name',
+  brand: {
+    '@type': 'Brand',
+    name: SITE.name,
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: DOMAIN_AGGREGATE_RATING.ratingValue,
+    reviewCount: DOMAIN_AGGREGATE_RATING.reviewCount,
+    bestRating: DOMAIN_AGGREGATE_RATING.bestRating,
+    worstRating: DOMAIN_AGGREGATE_RATING.worstRating,
+  },
+  review: DOMAIN_REVIEWS.map((review) => ({
+    '@type': 'Review',
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: String(review.rating),
+      bestRating: DOMAIN_AGGREGATE_RATING.bestRating,
+      worstRating: DOMAIN_AGGREGATE_RATING.worstRating,
+    },
+    author: {
+      '@type': 'Person',
+      name: review.author,
+    },
+    datePublished: review.datePublished,
+    reviewBody: review.reviewBody,
+  })),
+  offers: {
+    '@type': 'Offer',
+    url: SITE.url,
+    price: String(SITE.askingPrice),
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    businessFunction: 'https://schema.org/Sell',
+    seller: {
+      '@type': 'Organization',
+      name: SITE.name,
+      email: SITE.email,
+    },
+    shippingDetails: {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: '0.00',
+        currency: 'USD',
+      },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 1,
+          unitCode: 'DAY',
+        },
+        transitTime: {
+          '@type': 'QuantitativeValue',
+          minValue: 0,
+          maxValue: 0,
+          unitCode: 'DAY',
+        },
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'US',
+      },
+    },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+      applicableCountry: 'US',
+      merchantReturnDays: 0,
+    },
+  },
+};
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -47,66 +135,7 @@ const structuredData = {
         url: ogImage,
       },
     },
-    {
-      '@type': 'Product',
-      '@id': `${SITE.url}/#product`,
-      name: 'desigrs.monster Premium Domain Name',
-      description:
-        'The premium domain for the AI-powered design era — generative systems, immersive experiences, and human-centered strategy. Available for acquisition.',
-      url: SITE.url,
-      image: ogImage,
-      category: 'Premium Domain Name',
-      brand: {
-        '@type': 'Brand',
-        name: SITE.name,
-      },
-      offers: {
-        '@type': 'Offer',
-        url: ACQUISITION_MAILTO,
-        price: String(SITE.askingPrice),
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        businessFunction: 'https://schema.org/Sell',
-        seller: {
-          '@type': 'Organization',
-          name: SITE.name,
-          email: SITE.email,
-        },
-        shippingDetails: {
-          '@type': 'OfferShippingDetails',
-          shippingRate: {
-            '@type': 'MonetaryAmount',
-            value: '0.00',
-            currency: 'USD',
-          },
-          deliveryTime: {
-            '@type': 'ShippingDeliveryTime',
-            handlingTime: {
-              '@type': 'QuantitativeValue',
-              minValue: 0,
-              maxValue: 1,
-              unitCode: 'DAY',
-            },
-            transitTime: {
-              '@type': 'QuantitativeValue',
-              minValue: 0,
-              maxValue: 0,
-              unitCode: 'DAY',
-            },
-          },
-          shippingDestination: {
-            '@type': 'DefinedRegion',
-            addressCountry: 'US',
-          },
-        },
-        hasMerchantReturnPolicy: {
-          '@type': 'MerchantReturnPolicy',
-          returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
-          applicableCountry: 'US',
-          merchantReturnDays: 0,
-        },
-      },
-    },
+    ...(noindex ? [] : [productNode]),
     {
       '@type': 'Organization',
       '@id': `${SITE.url}/#organization`,

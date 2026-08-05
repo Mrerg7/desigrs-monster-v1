@@ -6,6 +6,7 @@ import Hero from '../components/Hero.astro';
 import WhySection from '../components/WhySection.astro';
 import TrendsSection from '../components/TrendsSection.astro';
 import SeoValueSection from '../components/SeoValueSection.astro';
+import ReviewsSection from '../components/ReviewsSection.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../config/site';
 
@@ -27,6 +28,7 @@ const data = site.data;
     <WhySection items={data.valueProps} />
     <TrendsSection items={data.trends} />
     <SeoValueSection items={data.seoPoints} />
+    <ReviewsSection />
   </main>
   <Footer disclaimer={data.disclaimer} />
 </BaseLayout>
