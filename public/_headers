@@ -11,7 +11,7 @@
   X-Robots-Tag: noindex
 
 /404.html
-  X-Robots-Tag: noindex
+  X-Robots-Tag: noindex, nofollow
 
 /sitemap-index.xml
   Content-Type: application/xml

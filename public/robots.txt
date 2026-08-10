@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Soft-404 / error targets should not be crawled as content URLs
+Disallow: /404
+Disallow: /404/
+Disallow: /404.html
+Disallow: /index.html
+
 Sitemap: https://desigrs.monster/sitemap-index.xml

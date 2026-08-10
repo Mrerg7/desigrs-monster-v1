@@ -12,6 +12,8 @@ interface Props {
   description?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Override auto-derived canonical (use site root for error pages). */
+  canonical?: string;
 }
 
 const {
@@ -19,12 +21,13 @@ const {
   description = SITE.description,
   ogImage = OG_IMAGE,
   noindex = false,
+  canonical,
 } = Astro.props;
 
 const pathname = Astro.url.pathname.endsWith('/')
   ? Astro.url.pathname
   : `${Astro.url.pathname}/`;
-const canonicalURL = new URL(pathname, `${SITE.url}/`).href;
+const canonicalURL = canonical ?? new URL(pathname, `${SITE.url}/`).href;
 
 const productNode = {
   '@type': 'Product',
@@ -115,7 +118,7 @@ const structuredData = {
     {
       '@type': 'WebSite',
       '@id': `${SITE.url}/#website`,
-      url: SITE.url,
+      url: `${SITE.url}/`,
       name: SITE.name,
       description,
       inLanguage: 'en-US',
@@ -123,7 +126,7 @@ const structuredData = {
     {
       '@type': 'WebPage',
       '@id': `${SITE.url}/#webpage`,
-      url: SITE.url,
+      url: `${SITE.url}/`,
       name: title,
       description,
       isPartOf: { '@id': `${SITE.url}/#website` },
@@ -151,7 +154,8 @@ const structuredData = {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
