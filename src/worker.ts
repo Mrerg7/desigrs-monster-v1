@@ -1,8 +1,9 @@
 /**
  * Edge middleware for desigrs.monster:
  * - 301 http → https and www → apex (single indexable host)
- * - 308 trailing-slash normalization to the canonical /path/ form
  * - 301 soft-404 crawl targets → home (fixes soft-200 on /404)
+ * - 308 trailing-slash normalisation, but only for paths that resolve, so
+ *   unknown URLs return a real 404 instead of a redirect hop
  * - X-Robots-Tag: noindex on every redirect so GSC logs no "Page with redirect" URLs
  */
 const CANONICAL_HOST = 'desigrs.monster';
@@ -52,8 +53,12 @@ export default {
     }
 
     if (!HAS_EXTENSION.test(url.pathname) && !url.pathname.endsWith('/')) {
-      url.pathname = `${url.pathname}/`;
-      return redirectResponse(url, 308);
+      const slashed = new URL(url.toString());
+      slashed.pathname = `${url.pathname}/`;
+      const probe = await env.ASSETS.fetch(new Request(slashed.toString(), { method: 'HEAD' }));
+      if (probe.status === 200) {
+        return redirectResponse(slashed, 308);
+      }
     }
 
     return env.ASSETS.fetch(request);
