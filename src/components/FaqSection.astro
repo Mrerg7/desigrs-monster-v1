@@ -1,0 +1,51 @@
+---
+import { ACQUISITION_MAILTO, OFFER_MAILTO } from '../config/site';
+
+interface Props {
+  items: { question: string; answer: string }[];
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+}
+
+const {
+  items,
+  eyebrow = 'Buyer FAQ',
+  title = 'Questions before you buy desigrs.monster.',
+  lead = 'Payment, escrow, transfer timing, and clearance — answered plainly so you can move fast when you are ready.',
+} = Astro.props;
+---
+
+<section id="faq" class="relative z-10 scroll-mt-20 px-5 py-20 sm:px-6 sm:py-24">
+  <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+    <div>
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        {eyebrow}
+      </p>
+      <h2 class="section-title text-[var(--color-ink)]">
+        {title}
+      </h2>
+      <p class="mt-4 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+        {lead}
+      </p>
+
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col">
+        <a href={ACQUISITION_MAILTO} class="btn-primary w-full min-h-12 sm:w-auto lg:w-full">
+          Ask a question
+        </a>
+        <a href={OFFER_MAILTO} class="btn-outline w-full min-h-12 sm:w-auto lg:w-full">
+          Make an offer
+        </a>
+      </div>
+    </div>
+
+    <div>
+      {items.map((item, index) => (
+        <details class="faq-item" open={index === 0}>
+          <summary>{item.question}</summary>
+          <div class="faq-answer">{item.answer}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

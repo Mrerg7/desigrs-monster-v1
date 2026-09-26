@@ -1,0 +1,20 @@
+---
+interface Props {
+  items: { label: string; value: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="relative z-10 -mt-px px-5 pt-12 sm:px-6 sm:pt-16" aria-label="Domain specifications">
+  <div class="mx-auto max-w-6xl">
+    <dl class="spec-strip">
+      {items.map((item) => (
+        <div>
+          <dt>{item.label}</dt>
+          <dd>{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

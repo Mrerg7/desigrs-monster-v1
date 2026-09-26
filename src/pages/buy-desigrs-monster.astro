@@ -1,0 +1,276 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import SpecStrip from '../components/SpecStrip.astro';
+import ProcessSection from '../components/ProcessSection.astro';
+import FaqSection from '../components/FaqSection.astro';
+import StickyCta from '../components/StickyCta.astro';
+import Footer from '../components/Footer.astro';
+import {
+  ACQUISITION_MAILTO,
+  OFFER_MAILTO,
+  SITE,
+} from '../config/site';
+
+const site = await getEntry('site', 'default');
+if (!site) {
+  throw new Error('Missing content entry: site/default');
+}
+const data = site.data;
+
+const title = 'Buy desigrs.monster — Escrow, Payment & Transfer Guide';
+const description =
+  'How to buy desigrs.monster: Escrow.com process, accepted payment methods, transfer timelines, and a clearance checklist. Asking $6,500 USD.';
+
+const paymentMethods = [
+  {
+    method: 'Bank wire',
+    detail: 'Best for closing quickly on a $6,500 purchase. Cleared funds usually land the same or next business day and are released from escrow once the transfer is confirmed.',
+  },
+  {
+    method: 'ACH transfer',
+    detail: 'Lower cost than a wire for US buyers. Allow 1–3 business days for settlement before escrow marks the transaction funded.',
+  },
+  {
+    method: 'Credit card',
+    detail: 'Supported by Escrow.com with its standard processing fee. Useful when you need the purchase on a company card or want purchase protection.',
+  },
+];
+
+const timeline = [
+  {
+    scenario: 'Same-registrar push',
+    window: 'Under 24 hours',
+    note: 'Both accounts at the same registrar — the owner pushes the name directly to your account ID.',
+  },
+  {
+    scenario: 'Auth-code transfer',
+    window: '5–7 days',
+    note: 'Standard ICANN inter-registrar transfer, including the required transfer-lock period and your registrar confirmation.',
+  },
+  {
+    scenario: 'Inquiry to escrow open',
+    window: 'Within 24 hours',
+    note: 'Send your inquiry with intended use, budget, and timeline — you get a direct reply from the owner.',
+  },
+];
+
+const checklist = [
+  'Search your target jurisdiction trademark registers for “desigrs” and close variants.',
+  'Review UDRP and prior dispute history for the exact string.',
+  'Confirm the spelling works for your audience — desigrs is a deliberate stylisation of “designers”.',
+  'Check social handle availability for the name you plan to launch under.',
+  'Decide your registrar in advance so the push or auth-code can be issued immediately.',
+  'Have your budget, timeline, and intended use ready — funded, specific inquiries move fastest.',
+];
+
+const faqs = [
+  {
+    question: 'What exactly do I receive when I buy desigrs.monster?',
+    answer: 'You receive the domain name registration itself, moved into an account you control at the registrar of your choice. There is no website, content, traffic history, or email included — this is a name-only acquisition, and it is priced accordingly.',
+  },
+  {
+    question: 'Who holds my money during the transfer?',
+    answer: 'Escrow.com, a licensed and regulated escrow holder, holds your payment for the duration of the transaction. The owner cannot access the funds, and you do not receive the domain, until both sides confirm completion. Neither party sends money or credentials directly to the other.',
+  },
+  {
+    question: 'What does the $6,500 asking price include?',
+    answer: 'The desigrs.monster domain name, the escrow transaction, and the registrar push or transfer. Escrow service fees follow Escrow.com’s standard fee schedule and are agreed in writing before the transaction is opened.',
+  },
+  {
+    question: 'Can I use a broker or buying service?',
+    answer: 'Yes. Brokers, acquisition services, and company procurement teams are welcome to transact on your behalf. Identify yourself and your principal in the first email so ownership records and the escrow agreement are set up correctly from the start.',
+  },
+  {
+    question: 'What happens if the transfer fails?',
+    answer: 'If the domain cannot be pushed or transferred for a reason attributable to the seller, escrow reverses the transaction and your funds are returned. Escrow only releases payment after you confirm the name is in your account.',
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${SITE.url}/buy-desigrs-monster/`}
+  faqs={faqs}
+  process={data.process}
+>
+  <Nav />
+  <main id="main">
+    <section class="relative overflow-hidden bg-[var(--color-ink)] text-white">
+      <div
+        class="pointer-events-none absolute -left-24 -top-28 h-72 w-72 rounded-full bg-[var(--color-accent)]/25 blur-3xl"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="pointer-events-none absolute -bottom-32 right-0 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative z-10 mx-auto max-w-6xl px-5 pb-16 pt-32 sm:px-6 sm:pb-20 sm:pt-36">
+        <p class="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-bright)]">
+          Acquisition guide
+        </p>
+        <h1 class="font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+          How to buy desigrs.monster
+        </h1>
+        <p class="mt-5 max-w-2xl font-serif text-lg leading-relaxed text-white/75 sm:text-xl">
+          A clear, escrow-protected path from first email to the name sitting in your registrar
+          account. Asking {SITE.askingPriceLabel} USD — no brokers, no hidden fees, no credentials
+          shared.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a href={ACQUISITION_MAILTO} class="btn-primary w-full min-h-12 sm:w-auto">
+            Start the acquisition
+          </a>
+          <a href={OFFER_MAILTO} class="btn-ghost w-full min-h-12 sm:w-auto">
+            Make an offer
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <SpecStrip items={data.specs} />
+
+    <section class="relative z-10 px-5 py-20 sm:px-6 sm:py-24">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            What you are buying
+          </p>
+          <h2 class="section-title text-[var(--color-ink)]">
+            A brandable design-domain asset, sold as-is by its owner.
+          </h2>
+        </div>
+        <div class="space-y-5 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/85">
+          <p>
+            desigrs.monster is a seven-letter, one-word domain in the .monster extension — an
+            ICANN-approved generic top-level domain indexed on the same terms as any other gTLD.
+            It is deliberately spelled as a stylisation of “designers”, which makes it short,
+            pronounceable, and unmistakable in a category crowded with hyphens and numbers.
+          </p>
+          <p>
+            The sale is a straight owner-to-buyer transfer of the registration. There is no
+            website, traffic history, or email service attached. What you are acquiring is the
+            name: a durable, memorable foundation for an AI design tool, a studio, a community, or
+            a creative platform — something that cannot be reissued once you own it.
+          </p>
+          <p>
+            Ownership, price, and transfer logistics are agreed in writing, then executed inside
+            an Escrow.com transaction so neither side is ever exposed.
+            <a href={`${SITE.url}/`} class="font-semibold text-[var(--color-accent)] underline-offset-4 hover:underline">
+              Read the full listing details
+            </a>
+            for positioning, market context, and buyer feedback.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <ProcessSection items={data.process} />
+
+    <section class="relative z-10 border-t border-[var(--color-line)] px-5 py-20 sm:px-6 sm:py-24">
+      <div class="mx-auto max-w-6xl">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+          Payment
+        </p>
+        <h2 class="section-title max-w-2xl text-[var(--color-ink)]">
+          Three ways to fund the purchase through escrow.
+        </h2>
+
+        <div class="mt-10 grid gap-6 sm:grid-cols-3">
+          {paymentMethods.map((item) => (
+            <article class="rounded-2xl border border-[var(--color-line)] bg-white p-6">
+              <h3 class="font-display text-lg tracking-tight text-[var(--color-ink)]">
+                {item.method}
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]/75">
+                {item.detail}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-14">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            Timelines
+          </p>
+          <h2 class="section-title max-w-2xl text-[var(--color-ink)]">
+            What to expect, and how long it takes.
+          </h2>
+
+          <div class="mt-8 overflow-x-auto rounded-2xl border border-[var(--color-line)]">
+            <table class="w-full min-w-[34rem] border-collapse text-left align-top">
+              <caption class="sr-only">Transfer timelines for purchasing desigrs.monster</caption>
+              <thead>
+                <tr class="bg-white/70">
+                  <th scope="col" class="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-mist)]">Scenario</th>
+                  <th scope="col" class="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-mist)]">Window</th>
+                  <th scope="col" class="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-mist)]">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {timeline.map((row) => (
+                  <tr class="border-t border-[var(--color-line)] bg-white/60">
+                    <th scope="row" class="px-5 py-4 font-display text-sm font-semibold tracking-tight text-[var(--color-ink)]">
+                      {row.scenario}
+                    </th>
+                    <td class="whitespace-nowrap px-5 py-4 text-sm font-semibold text-[var(--color-accent-deep)]">
+                      {row.window}
+                    </td>
+                    <td class="px-5 py-4 text-sm leading-relaxed text-[var(--color-ink-soft)]/75">
+                      {row.note}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative z-10 border-t border-[var(--color-line)] bg-white/40 px-5 py-20 sm:px-6 sm:py-24">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            Due diligence
+          </p>
+          <h2 class="section-title text-[var(--color-ink)]">
+            Six checks to run before you fund escrow.
+          </h2>
+          <p class="mt-4 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+            Clearing these up front keeps the transfer inside a single day instead of stalling at
+            the registrar.
+          </p>
+        </div>
+
+        <ol class="space-y-4">
+          {checklist.map((item, index) => (
+            <li class="flex gap-4 border-t border-[var(--color-line)] pt-4">
+              <span class="font-mono text-xs tracking-widest text-[var(--color-mist)]" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span class="text-[0.98rem] leading-relaxed text-[var(--color-ink-soft)]/80">
+                {item}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <FaqSection
+      items={faqs}
+      eyebrow="Purchase FAQ"
+      title="Details on payment, escrow, and transfer."
+      lead="The mechanics of buying desigrs.monster — what transfers, who holds the money, and what happens if something goes wrong."
+    />
+  </main>
+  <Footer disclaimer={data.disclaimer} />
+  <StickyCta />
+</BaseLayout>

@@ -1,5 +1,5 @@
 ---
-import { ACQUISITION_MAILTO, HERO_IMAGE, SITE } from '../config/site';
+import { ACQUISITION_MAILTO, HERO_IMAGE, OFFER_MAILTO, SITE } from '../config/site';
 
 interface Props {
   tagline: string;
@@ -31,9 +31,9 @@ const { tagline, heroSupport, trustPoints } = Astro.props;
     </div>
   </div>
 
-  <div class="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col justify-center px-5 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32">
+  <div class="relative z-10 mx-auto flex min-h-[100dvh] max-w-6xl flex-col justify-center px-5 pb-32 pt-28 sm:px-6 sm:pb-24 sm:pt-32">
     <p class="reveal mb-5 font-sans text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-accent-bright)]">
-      Premium domain available
+      Premium domain available for sale
     </p>
 
     <h1 class="domain-mark reveal reveal-delay-1 text-white">
@@ -48,18 +48,36 @@ const { tagline, heroSupport, trustPoints } = Astro.props;
       {heroSupport}
     </p>
 
-    <div class="reveal reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+    <p
+      class="reveal reveal-delay-3 mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white/85 backdrop-blur-sm"
+    >
+      Asking
+      <span class="font-display text-base font-semibold tracking-tight text-white">
+        {SITE.askingPriceLabel}
+      </span>
+      USD
+      <span class="hidden text-white/50 sm:inline">&middot; open to reasonable offers</span>
+    </p>
+
+    <div class="reveal reveal-delay-3 mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
       <a href={ACQUISITION_MAILTO} class="btn-primary w-full min-h-12 sm:w-auto">
-        <span class="sm:hidden">Inquire to acquire</span>
+        <span class="sm:hidden">Inquire to buy &mdash; {SITE.askingPriceLabel}</span>
         <span class="hidden sm:inline">Inquire at {SITE.email}</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 shrink-0" aria-hidden="true">
           <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
         </svg>
       </a>
-      <a href="#why" class="btn-ghost w-full min-h-12 sm:w-auto">See why it matters</a>
+      <a href={OFFER_MAILTO} class="btn-ghost w-full min-h-12 sm:w-auto">Make an offer</a>
     </div>
 
-    <ul class="reveal reveal-delay-3 mt-10 flex flex-col gap-2 text-sm font-medium text-white/60 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2 sm:text-xs sm:uppercase sm:tracking-[0.14em] sm:text-white/55">
+    <a
+      href="#why"
+      class="reveal reveal-delay-3 mt-4 inline-flex min-h-11 w-fit items-center text-sm font-medium text-white/65 underline-offset-4 transition-colors hover:text-white hover:underline"
+    >
+      See why this domain matters &darr;
+    </a>
+
+    <ul class="reveal reveal-delay-3 mt-8 flex flex-col gap-2 text-sm font-medium text-white/60 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2 sm:text-xs sm:uppercase sm:tracking-[0.14em] sm:text-white/55">
       {trustPoints.map((point) => (
         <li class="leading-snug">{point}</li>
       ))}

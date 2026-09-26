@@ -2,10 +2,24 @@
 import '../styles/global.css';
 import {
   SITE,
+  HERO_IMAGE,
   OG_IMAGE,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  ACQUISITION_MAILTO,
   DOMAIN_REVIEWS,
   DOMAIN_AGGREGATE_RATING,
 } from '../config/site';
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface ProcessItem {
+  title: string;
+  body: string;
+}
 
 interface Props {
   title?: string;
@@ -14,6 +28,8 @@ interface Props {
   noindex?: boolean;
   /** Override auto-derived canonical (use site root for error pages). */
   canonical?: string;
+  faqs?: FaqItem[];
+  process?: ProcessItem[];
 }
 
 const {
@@ -22,22 +38,27 @@ const {
   ogImage = OG_IMAGE,
   noindex = false,
   canonical,
+  faqs = [],
+  process = [],
 } = Astro.props;
 
 const pathname = Astro.url.pathname.endsWith('/')
   ? Astro.url.pathname
   : `${Astro.url.pathname}/`;
 const canonicalURL = canonical ?? new URL(pathname, `${SITE.url}/`).href;
+const isHome = canonicalURL === `${SITE.url}/`;
 
 const productNode = {
   '@type': 'Product',
   '@id': `${SITE.url}/#product`,
   name: 'desigrs.monster Premium Domain Name',
   description:
-    'The premium domain for the AI-powered design era — generative systems, immersive experiences, and human-centered strategy. Available for acquisition.',
+    'Brandable 7-letter .monster domain name for sale — built for AI design tools, creative studios, generative design platforms, and design-led brands. Asking price $6,500 USD.',
   url: SITE.url,
   image: ogImage,
+  sku: SITE.sku,
   category: 'Premium Domain Name',
+  itemCondition: 'https://schema.org/NewCondition',
   brand: {
     '@type': 'Brand',
     name: SITE.name,
@@ -66,14 +87,16 @@ const productNode = {
   })),
   offers: {
     '@type': 'Offer',
-    url: SITE.url,
+    url: `${SITE.url}/`,
     price: String(SITE.askingPrice),
     priceCurrency: 'USD',
+    priceValidUntil: '2027-09-25',
     availability: 'https://schema.org/InStock',
     businessFunction: 'https://schema.org/Sell',
     seller: {
       '@type': 'Organization',
       name: SITE.name,
+      url: SITE.url,
       email: SITE.email,
     },
     shippingDetails: {
@@ -112,6 +135,62 @@ const productNode = {
   },
 };
 
+const breadcrumbNode = {
+  '@type': 'BreadcrumbList',
+  '@id': `${canonicalURL}#breadcrumb`,
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: `${SITE.url}/`,
+    },
+    ...(isHome
+      ? []
+      : [
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: title,
+            item: canonicalURL,
+          },
+        ]),
+  ],
+};
+
+const faqNode =
+  !noindex && faqs.length > 0
+    ? {
+        '@type': 'FAQPage',
+        '@id': `${canonicalURL}#faq`,
+        mainEntity: faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      }
+    : null;
+
+const howToNode =
+  !noindex && process.length > 0
+    ? {
+        '@type': 'HowTo',
+        '@id': `${canonicalURL}#how-to-buy`,
+        name: 'How to buy the desigrs.monster domain name',
+        description:
+          'Four steps to acquire desigrs.monster securely: inquiry, escrow agreement, funding, and transfer to your registrar.',
+        step: process.map((step, index) => ({
+          '@type': 'HowToStep',
+          position: index + 1,
+          name: step.title,
+          text: step.body,
+        })),
+      }
+    : null;
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -122,29 +201,37 @@ const structuredData = {
       name: SITE.name,
       description,
       inLanguage: 'en-US',
+      publisher: { '@id': `${SITE.url}/#organization` },
     },
     {
       '@type': 'WebPage',
-      '@id': `${SITE.url}/#webpage`,
-      url: `${SITE.url}/`,
+      '@id': `${canonicalURL}#webpage`,
+      url: canonicalURL,
       name: title,
       description,
       isPartOf: { '@id': `${SITE.url}/#website` },
       datePublished: SITE.publishedDate,
-      dateModified: SITE.publishedDate,
+      dateModified: SITE.modifiedDate,
       inLanguage: 'en-US',
       primaryImageOfPage: {
         '@type': 'ImageObject',
         url: ogImage,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
       },
     },
+    breadcrumbNode,
     ...(noindex ? [] : [productNode]),
+    ...(faqNode ? [faqNode] : []),
+    ...(howToNode ? [howToNode] : []),
     {
       '@type': 'Organization',
       '@id': `${SITE.url}/#organization`,
       name: SITE.name,
       url: SITE.url,
       email: SITE.email,
+      description:
+        'Owner-operated listing for the premium desigrs.monster domain name, offered for sale directly to buyers and brand builders.',
     },
   ],
 };
@@ -157,16 +244,14 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content={SITE.themeColor} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={SITE.keywords.join(', ')} />
     <meta
       name="robots"
-      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'}
-    />
-    <meta
-      name="keywords"
-      content="desigrs.monster, design domain for sale, AI design, generative design, immersive design, premium domain, designer tools, creative technology"
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
     <link rel="canonical" href={canonicalURL} />
 
@@ -181,11 +266,12 @@ const structuredData = {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:secure_url" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
     <meta
       property="og:image:alt"
-      content="desigrs.monster — The Domain for the Future of Design"
+      content="desigrs.monster — premium design domain for sale"
     />
     <meta property="og:locale" content={SITE.locale} />
 
@@ -195,16 +281,21 @@ const structuredData = {
     <meta name="twitter:image" content={ogImage} />
     <meta
       name="twitter:image:alt"
-      content="desigrs.monster — The Domain for the Future of Design"
+      content="desigrs.monster — premium design domain for sale"
     />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Sora:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="image"
+      href={HERO_IMAGE}
+      width="1024"
+      height="558"
+      fetchpriority="high"
     />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/sora-xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwV6-xo6eeIw.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/dmsans-rP2Hp2ywxg089UriCZOIHTWEBlw.woff2" crossorigin />
 
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>

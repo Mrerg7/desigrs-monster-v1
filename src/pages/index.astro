@@ -3,10 +3,14 @@ import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
+import SpecStrip from '../components/SpecStrip.astro';
 import WhySection from '../components/WhySection.astro';
 import TrendsSection from '../components/TrendsSection.astro';
 import SeoValueSection from '../components/SeoValueSection.astro';
+import FaqSection from '../components/FaqSection.astro';
 import ReviewsSection from '../components/ReviewsSection.astro';
+import ProcessSection from '../components/ProcessSection.astro';
+import StickyCta from '../components/StickyCta.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../config/site';
 
@@ -17,18 +21,23 @@ if (!site) {
 const data = site.data;
 ---
 
-<BaseLayout title={SITE.title} description={SITE.description}>
+<BaseLayout title={SITE.title} description={SITE.description} faqs={data.faqs} process={data.process}>
   <Nav />
-  <main>
+  <main id="main">
     <Hero
       tagline={data.tagline}
       heroSupport={data.heroSupport}
       trustPoints={data.trustPoints}
     />
+    <SpecStrip items={data.specs} />
     <WhySection items={data.valueProps} />
     <TrendsSection items={data.trends} />
     <SeoValueSection items={data.seoPoints} />
+    <FaqSection items={data.faqs} />
     <ReviewsSection />
+    <ProcessSection items={data.process} />
   </main>
   <Footer disclaimer={data.disclaimer} />
+  <StickyCta />
 </BaseLayout>
+

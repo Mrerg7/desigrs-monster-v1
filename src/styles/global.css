@@ -1,3 +1,4 @@
+@import "./fonts.css";
 @import "tailwindcss";
 
 @theme {
@@ -12,7 +13,7 @@
   --color-accent: #7c3aed;
   --color-accent-bright: #a78bfa;
   --color-accent-deep: #5b21b6;
-  --color-mist: #9b8bb8;
+  --color-mist: #7a6b99;
   --color-line: rgba(15, 10, 26, 0.12);
 }
 
@@ -44,6 +45,12 @@
   ::selection {
     background: color-mix(in srgb, var(--color-accent) 28%, white);
     color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 }
 
@@ -162,6 +169,148 @@
   .btn-ghost:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.55);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.95rem 1.65rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-line);
+    background: white;
+    color: var(--color-ink);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, white);
+  }
+
+  .btn-outline:active {
+    transform: scale(0.985);
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.15rem 0;
+    min-height: 3rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: "";
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-top: 0.1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-line);
+    background:
+      linear-gradient(var(--color-accent), var(--color-accent)) center / 0.7rem 2px no-repeat,
+      linear-gradient(var(--color-accent), var(--color-accent)) center / 2px 0.7rem no-repeat;
+    transition: transform 200ms ease, background-color 200ms ease;
+  }
+
+  .faq-item[open] summary::after {
+    background:
+      linear-gradient(var(--color-accent), var(--color-accent)) center / 0.7rem 2px no-repeat;
+    transform: rotate(180deg);
+  }
+
+  .faq-item summary:hover {
+    color: var(--color-accent-deep);
+  }
+
+  .faq-answer {
+    padding: 0 3rem 1.35rem 0;
+    max-width: 62ch;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+    opacity: 0.85;
+    text-wrap: pretty;
+  }
+
+  .spec-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    background: var(--color-line);
+  }
+
+  .spec-strip > div {
+    background: white;
+    padding: 1rem 1.15rem;
+  }
+
+  .spec-strip dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-mist);
+  }
+
+  .spec-strip dd {
+    margin-top: 0.3rem;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  .sticky-cta {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    border-top: 1px solid var(--color-line);
+    background: color-mix(in srgb, white 92%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 -8px 30px rgba(15, 10, 26, 0.12);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transition: transform 220ms ease, opacity 180ms ease;
+  }
+
+  .sticky-cta--hidden {
+    transform: translateY(110%);
+    opacity: 0;
+    pointer-events: none;
   }
 
   .atmosphere {

@@ -28,6 +28,24 @@ const site = defineCollection({
         body: z.string(),
       }),
     ),
+    specs: z.array(
+      z.object({
+        label: z.string(),
+        value: z.string(),
+      }),
+    ),
+    faqs: z.array(
+      z.object({
+        question: z.string(),
+        answer: z.string(),
+      }),
+    ),
+    process: z.array(
+      z.object({
+        title: z.string(),
+        body: z.string(),
+      }),
+    ),
     disclaimer: z.string(),
   }),
 });

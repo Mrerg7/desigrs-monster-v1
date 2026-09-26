@@ -1,0 +1,64 @@
+---
+import { ACQUISITION_MAILTO, SITE } from '../config/site';
+
+interface Props {
+  items: { title: string; body: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section
+  id="process"
+  class="relative z-10 scroll-mt-20 border-t border-[var(--color-line)] bg-white/40 px-5 py-20 sm:px-6 sm:py-24"
+>
+  <div class="mx-auto max-w-6xl">
+    <div class="max-w-2xl">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        Secure acquisition
+      </p>
+      <h2 class="section-title text-[var(--color-ink)]">
+        How you take ownership of desigrs.monster.
+      </h2>
+      <p class="mt-4 font-serif text-lg leading-relaxed text-[var(--color-ink-soft)]/80">
+        A four-step escrow process protects both sides. No brokers, no credentials shared, no
+        domain released before funds are secured.
+      </p>
+    </div>
+
+    <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {items.map((step, index) => (
+        <li class="relative rounded-2xl border border-[var(--color-line)] bg-white p-6">
+          <span
+            class="font-mono text-xs tracking-widest text-[var(--color-accent)]"
+            aria-hidden="true"
+          >
+            Step {String(index + 1).padStart(2, '0')}
+          </span>
+          <h3 class="mt-3 font-display text-lg leading-snug tracking-tight text-[var(--color-ink)]">
+            {step.title}
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]/75">
+            {step.body}
+          </p>
+        </li>
+      ))}
+    </ol>
+
+    <div
+      class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-ink)] px-6 py-6 text-white sm:flex-row sm:items-center sm:px-8"
+    >
+      <div>
+        <p class="font-display text-xl tracking-tight sm:text-2xl">
+          Ready to start? One email opens the transaction.
+        </p>
+        <p class="mt-1 text-sm text-white/55">
+          Asking {SITE.askingPriceLabel} USD &bull; response within 24 hours
+        </p>
+      </div>
+      <a href={ACQUISITION_MAILTO} class="btn-primary w-full shrink-0 min-h-12 sm:w-auto">
+        Begin acquisition
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import { ACQUISITION_MAILTO, SITE } from '../config/site';
+---
+
+<div class="sticky-cta sticky-cta--hidden sm:hidden" data-sticky-cta>
+  <div class="flex items-center gap-3 px-4 py-3">
+    <div class="min-w-0 flex-1">
+      <p class="truncate font-display text-sm tracking-tight text-[var(--color-ink)]">
+        {SITE.name}
+      </p>
+      <p class="text-xs text-[var(--color-mist)]">{SITE.askingPriceLabel} USD</p>
+    </div>
+    <a
+      href={ACQUISITION_MAILTO}
+      class="btn-primary min-h-11 shrink-0 !px-5 text-sm"
+    >
+      Inquire to buy
+    </a>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var bar = document.querySelector('[data-sticky-cta]');
+    var anchor = document.querySelector('main > section:first-child');
+    if (!bar || !anchor) return;
+    var sync = function () {
+      var rect = anchor.getBoundingClientRect();
+      var heroVisible = rect.bottom > 96 && rect.top < window.innerHeight;
+      bar.classList.toggle('sticky-cta--hidden', heroVisible);
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  })();
+</script>
